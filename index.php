@@ -87,9 +87,9 @@ function putDataInFile($currency, $date) {
     }
 }
 
-function validator($amau, $date, $name) {
+function validator($amount, $date, $name) {
     $result_message = "";
-    if (!is_numeric($amau)) {
+    if (!is_numeric($amount)) {
         $result_message .= "No numeric amounth! ";
     };
     if (empty($name)) {
@@ -103,9 +103,9 @@ function validator($amau, $date, $name) {
     return $result_message;
 }
 
-function multiplicator($amau, $curr) {
+function multiplicator($amount, $curr) {
     if ($curr != null) {
-        return round($amau / $curr, 2);
+        return round($amount / $curr, 2);
     } else {
         return "Information isn't available!";
     }
@@ -132,10 +132,10 @@ function checkIfDayIsWeekend($pdate) {///chek if a day is weekend
 $result = "";
 
 if (isset($_GET['amount'])) {
-    $amau = htmlspecialchars($_GET['amount']);
+    $amount = htmlspecialchars($_GET['amount']);
 } else {
     $_GET['amount'] = 1;
-    $amau = 1;
+    $amount = 1;
 }
 if (isset($_GET['date'])) {
     $fillName = date_format(date_create(htmlspecialchars($_GET['date'])), "Y-m-d");
@@ -150,12 +150,12 @@ if (isset($_GET['currency'])) {
     $name = strtolower(htmlspecialchars($_GET['currency']));
 }
 
-$result_message = validator($amau, $date, $name);
+$result_message = validator($amount, $date, $name);
 
 if ($result_message == "") {
     $result = "OK";
 
-    $result_message = (multiplicator($amau, findInFile($name, $date)));
+    $result_message = (multiplicator($amount, findInFile($name, $date)));
     if ($result_message == "Information isn't available!") {
         $result = "ERROR";
     };
